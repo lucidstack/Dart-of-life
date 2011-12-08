@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <title>Conway's Dart of life</title>
+    <link type="text/css" rel="stylesheet" href="dartoflife.css">
+  </head>
+  <body>
+    <div id="centered">
+    	<h1 id="title">Conway's Dart of life</h1>
+    	<canvas id="canvas" width="600" height="600">dart is not running</canvas>
+    </div>
+    <div id="settings">
+    	<button id="button" type="button">Play!</button>
+    	<label>Cells dimension</label>
+    	<input id="cellDimSlider" type="range" value="20" max="60" min="20"><label id="sliderValue"></label>
+    	<br>
+    	<label>X</label>
+    	<input id="xCoord" type="text" value="0"> 
+    	<br>
+    	<label>Y</label>
+    	<input id="yCoord" type="text" value="0">
+    </div>
+    <script type="text/javascript" src="dartoflife.dart.app.js"></script>
+  </body>
+</html>
