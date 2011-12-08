@@ -1,0 +1,6 @@
+Dart of life is a Conway's Game of life implementation in Dart (http://www.dartlang.org).
+
+dartoflife.dart is the main class, which manages the canvas element containing the cellular automata representation. Life.dart contains the matrix and the core functions which take care of the development of the CA.
+
+In this first implementation, document.window.setInterval() is used to callback the main dartoflife.animate() function, which refreshes the canvas element with the updated matrix. 
+
