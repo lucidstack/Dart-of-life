@@ -8,15 +8,20 @@ class dartoflife {
   static final String ORANGE = "orange";
   static final String BLACK = "black";
   static final String WHITE = "white";
-  static final LINE_WIDTH = 3;
+  static final LINE_WIDTH = 2;
   
   HTMLDocument doc;
   CanvasRenderingContext2D drawer;
   HTMLCanvasElement canvas;
   HTMLButtonElement playButton;
+  HTMLButtonElement resetButton;
   HTMLInputElement slider;
   HTMLInputElement xCoordInput;
   HTMLInputElement yCoordInput;
+  HTMLInputElement speedInput;
+  
+  var intervalHandler;
+  int speed;
   bool playing = false;
   
   int squareDim;
@@ -31,14 +36,18 @@ class dartoflife {
     drawer.setStrokeColor(ORANGE);
     slider = doc.getElementById("cellDimSlider"); 
     squareDim = Math.parseInt(slider.value);
-    this.drawTable();
-    playButton = doc.getElementById("button");
+    
+    playButton = doc.getElementById("playButton");
+    resetButton = doc.getElementById("resetButton");
     xCoordInput = doc.getElementById("xCoord");
     yCoordInput = doc.getElementById("yCoord");
+    speedInput = doc.getElementById("speed");
+
     this.initializeActions();
-    
     life = new Life((SIZE/squareDim).floor().toInt());
-    window.setInterval(_animate,200);
+    speed = Math.parseInt(speedInput.value);
+    this.drawTable();
+    intervalHandler = window.setInterval(_animate,speed);
   }
   
   void _animate() {
@@ -57,36 +66,47 @@ class dartoflife {
   }
   
   void initializeActions() {
+    
     xCoordInput.addEventListener('change', (Event e) {
-      eraseSquare();
       xCoord = Math.parseInt(xCoordInput.value);
-      drawSquare();
+      if(life.matrix[xCoord][yCoord] == 1) {
+        eraseSquare();
+        life.matrix[xCoord][yCoord] = 0;        
+      }
+      else {
+        drawSquare();      
+        life.matrix[xCoord][yCoord] = 1;
+      }
     }, true);
     yCoordInput.addEventListener('change', (Event e) {
-      eraseSquare();
       yCoord = Math.parseInt(yCoordInput.value);
-      drawSquare();
+      if(life.matrix[xCoord][yCoord] == 1) {
+        eraseSquare();
+        life.matrix[xCoord][yCoord] = 0;        
+      }
+      else {
+        drawSquare();      
+        life.matrix[xCoord][yCoord] = 1;
+      }
     }, true);
-    canvas.addEventListener('mousedown',_onMouseDown,false);
+    speedInput.addEventListener('change', (Event e) {
+      speed = Math.parseInt(speedInput.value);
+      window.clearInterval(intervalHandler);
+      intervalHandler = window.setInterval(_animate,speed);
+    },false);
     slider.addEventListener('change', (Event e) {
-      doc.getElementById('sliderValue').innerHTML = slider.value;
       squareDim = Math.parseInt(slider.value);
       drawTable();
     },false);
-    playButton.addEventListener('mousedown', (Event e) {
-      if(playButton.innerHTML == "Play!") {
-        print("da s");
-        playing = true;
-        playButton.innerHTML = "Pause";        
-      }
-      else {
-        playing = false;
-        playButton.innerHTML = "Play!";
-      }
-    },false);
+
+    canvas.addEventListener('mousedown',_draw,false);
+    playButton.addEventListener('mousedown', _play,false);
+    resetButton.addEventListener('mousedown',_reset,false);
   }
   
-  void _onMouseDown(MouseEvent e) {
+  
+  
+  void _draw(MouseEvent e) {
     xCoord = (e.offsetX/squareDim).floor().toInt();
     yCoord = (e.offsetY/squareDim).floor().toInt();
     if(life.matrix[xCoord][yCoord] == 0) {
@@ -100,6 +120,22 @@ class dartoflife {
     yCoordInput.value = yCoord.toString();
     print('X : $xCoord');
     print('Y : $yCoord');
+  }
+  
+  void _play(MouseEvent e) {
+    if(playButton.innerHTML == "Play!") {
+      playing = true;
+      playButton.innerHTML = "Pause";        
+    }
+    else {
+      playing = false;
+      playButton.innerHTML = "Play!";
+    }
+  }
+  
+  void _reset(MouseEvent e) {
+    life.reset();
+    drawTable();
   }
   
   void drawSquare() {

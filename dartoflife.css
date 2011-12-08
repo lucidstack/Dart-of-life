@@ -1,3 +1,10 @@
+body,div {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	display:block;
+}
+
 h1 {
   font-size: 2em;
   font-weight: bold;
@@ -6,10 +13,28 @@ h1 {
   text-align: center;
 }
 
-#centered {
-	text-align: center;
+#container {
+	position:relative;
+	width:900px;
+}
+
+#canvas {
+	position:absolute;
+	left:0;
+	top:0;
 }
 
 #settings {
+	position:absolute;
 	text-align: right;
+	top:0;
+	right:0;
+}
+
+#speed {
+	margin-bottom:10px;
+}
+
+#resetButton {
+	margin-left:10px;
 }

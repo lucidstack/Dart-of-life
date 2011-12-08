@@ -17,7 +17,6 @@ class Life {
   }
     
   void nextStep() {
-
     for(var i=0; i<matrix.length; ++i) {
       for(var j=0; j<matrix.length; ++j) {
         if(_neighsAlive(i,j) == 3) {
@@ -61,4 +60,11 @@ class Life {
     return neighsAlive;  
   }
   
+  void reset() {
+    for(var i=0; i < matrix.length; ++i)
+      for(var j=0; j < matrix.length; ++j) {
+        _temporary[i][j] = 0;
+        matrix[i][j] = 0;
+        }
+  }
 }
